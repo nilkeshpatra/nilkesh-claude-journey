@@ -1,0 +1,1 @@
+I am Nilkesh Patra, working as a Director in data science for a consulting firm. I would like to learn to use Claude to increase my efficiency as well as building agents and deploy agents. In the next 60 days, I would like to use Claude to the best possible ways so that I can contribute to this new AI era.
