@@ -1,0 +1,3 @@
+Lazy Prompt explaining prompt engineering - generated the output "lazy prompt"
+Engineered Prompt generated the output "engineered prompt"
+
