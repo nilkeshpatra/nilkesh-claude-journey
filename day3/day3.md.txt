@@ -1,0 +1,14 @@
+Payment Observatory Requirement
+
+Prompt to create the details for Program Sponsor
+A payments observatory is needed to track the payments and fix the issues quicker. Please summarize the requirement of the observatory for a presentation to Program sponsor
+
+Response
+payments_observatory_exec_summary.html
+
+
+Prompt to create the details for an architect
+Create the summary to present the requirement to an architect
+
+Response
+payments_observatory_architect_summary.html
