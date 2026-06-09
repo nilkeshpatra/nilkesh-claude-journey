@@ -1,0 +1,219 @@
+
+<h2 class="sr-only">Payments Observatory — architecture requirements summary for solution architect review</h2>
+
+<div style="padding:2rem 0;">
+
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+    <div>
+      <p style="font-size:11px; font-weight:500; color:var(--color-text-tertiary); letter-spacing:0.08em; margin:0 0 4px;">ARCHITECTURE REQUIREMENTS</p>
+      <h1 style="font-size:22px; font-weight:500; margin:0;">Payments Observatory</h1>
+    </div>
+    <span style="background:var(--color-background-info); color:var(--color-text-info); font-size:12px; font-weight:500; padding:4px 14px; border-radius:var(--border-radius-md);">Solution design input</span>
+  </div>
+
+  <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; margin-bottom:1.5rem;">
+    <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 6px;">
+      <i class="ti ti-target" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Problem statement
+    </p>
+    <p style="font-size:14px; color:var(--color-text-primary); margin:0; line-height:1.6;">Customer-facing transaction data is currently fragmented across multiple downstream systems with no aggregation layer. There is no unified event stream, no cross-system correlation, and no real-time health signal. Issue detection is reactive and manual. The Observatory must resolve this with a purpose-built observability platform layered on top of existing payment infrastructure — without replacing it.</p>
+  </div>
+
+  <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px;">
+    <i class="ti ti-layers-intersect" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Logical architecture layers
+  </p>
+  <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; margin-bottom:1.5rem;">
+
+    <div style="display:grid; grid-template-columns:160px 1fr; border-bottom:0.5px solid var(--color-border-tertiary);">
+      <div style="padding:14px 16px; background:var(--color-background-secondary); display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0;">Layer 4</p>
+        <p style="font-size:11px; color:var(--color-text-tertiary); margin:2px 0 0;">Presentation</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 4px;">Dashboards &amp; alerting UI</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin:0;">Executive health view · Operations incident console · Engineer drill-down workspace · Threshold-based alert configuration</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:160px 1fr; border-bottom:0.5px solid var(--color-border-tertiary);">
+      <div style="padding:14px 16px; background:var(--color-background-secondary); display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0;">Layer 3</p>
+        <p style="font-size:11px; color:var(--color-text-tertiary); margin:2px 0 0;">Analytics &amp; detection</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 4px;">Processing &amp; correlation engine</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin:0;">Real-time stream processing · Anomaly &amp; threshold detection · Cross-system event correlation · Transaction state aggregation</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:160px 1fr; border-bottom:0.5px solid var(--color-border-tertiary);">
+      <div style="padding:14px 16px; background:var(--color-background-secondary); display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0;">Layer 2</p>
+        <p style="font-size:11px; color:var(--color-text-tertiary); margin:2px 0 0;">Ingestion</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 4px;">Event collection &amp; normalisation</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin:0;">Event bus / message broker · Schema normalisation across sources · Data quality validation · Dead-letter queue handling</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:160px 1fr;">
+      <div style="padding:14px 16px; background:var(--color-background-secondary); display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0;">Layer 1</p>
+        <p style="font-size:11px; color:var(--color-text-tertiary); margin:2px 0 0;">Source systems</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 4px;">Existing payment infrastructure (read-only)</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin:0;">Payment gateway · Fraud &amp; risk engine · Ledger / core banking · Notification service · Customer identity store</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px;">
+    <i class="ti ti-file-description" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Functional requirements
+  </p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:10px; margin-bottom:1.5rem;">
+
+    <div style="background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0 0 6px;">
+        <i class="ti ti-plug" style="font-size:14px; vertical-align:-2px; margin-right:5px;" aria-hidden="true"></i>Data ingestion
+      </p>
+      <ul style="font-size:12px; color:var(--color-text-secondary); margin:0; padding-left:16px; line-height:1.8;">
+        <li>Real-time event streaming from all source systems</li>
+        <li>Batch fallback for systems without event APIs</li>
+        <li>Canonical event schema across all sources</li>
+        <li>End-to-end transaction ID correlation</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0 0 6px;">
+        <i class="ti ti-cpu" style="font-size:14px; vertical-align:-2px; margin-right:5px;" aria-hidden="true"></i>Processing
+      </p>
+      <ul style="font-size:12px; color:var(--color-text-secondary); margin:0; padding-left:16px; line-height:1.8;">
+        <li>Sub-second latency for critical failure events</li>
+        <li>Stateful transaction lifecycle tracking</li>
+        <li>Configurable alerting rules engine</li>
+        <li>Anomaly detection on failure rates &amp; latency</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0 0 6px;">
+        <i class="ti ti-database" style="font-size:14px; vertical-align:-2px; margin-right:5px;" aria-hidden="true"></i>Storage
+      </p>
+      <ul style="font-size:12px; color:var(--color-text-secondary); margin:0; padding-left:16px; line-height:1.8;">
+        <li>Hot store for live &amp; recent transactions</li>
+        <li>Cold store for historical audit &amp; trend analysis</li>
+        <li>Retention policy aligned to compliance obligations</li>
+        <li>Immutable audit log of all events</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-primary); margin:0 0 6px;">
+        <i class="ti ti-layout-dashboard" style="font-size:14px; vertical-align:-2px; margin-right:5px;" aria-hidden="true"></i>Presentation
+      </p>
+      <ul style="font-size:12px; color:var(--color-text-secondary); margin:0; padding-left:16px; line-height:1.8;">
+        <li>Role-based views (exec / ops / engineer)</li>
+        <li>Transaction search &amp; drill-down</li>
+        <li>Alert management &amp; escalation workflow</li>
+        <li>Exportable incident reports</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px;">
+    <i class="ti ti-shield-check" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Non-functional requirements
+  </p>
+  <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; margin-bottom:1.5rem;">
+    <table style="width:100%; font-size:13px; border-collapse:collapse; table-layout:fixed;">
+      <thead>
+        <tr style="background:var(--color-background-secondary);">
+          <th style="text-align:left; padding:10px 14px; font-weight:500; color:var(--color-text-secondary); width:30%;">Attribute</th>
+          <th style="text-align:left; padding:10px 14px; font-weight:500; color:var(--color-text-secondary);">Requirement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Availability</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">99.9% uptime — observatory must not become a payment dependency</td>
+        </tr>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Latency</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">Critical alerts delivered within 30 seconds of event occurrence</td>
+        </tr>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Scalability</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">Handle peak transaction volumes with headroom; horizontally scalable ingestion</td>
+        </tr>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Security</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">Read-only access to source systems; data masking on PII; RBAC on all views</td>
+        </tr>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Resilience</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">No single point of failure; graceful degradation if a source system is unavailable</td>
+        </tr>
+        <tr style="border-top:0.5px solid var(--color-border-tertiary);">
+          <td style="padding:10px 14px; color:var(--color-text-secondary);">Compliance</td>
+          <td style="padding:10px 14px; color:var(--color-text-primary);">Audit log retention aligned to PCI-DSS and applicable data residency rules</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px;">
+    <i class="ti ti-alert-circle" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Key architecture decisions to resolve
+  </p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:10px; margin-bottom:1.5rem;">
+    <div style="background:var(--color-background-warning); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-warning); margin:0 0 4px;">Integration pattern</p>
+      <p style="font-size:12px; color:var(--color-text-warning); margin:0;">Event-driven vs polling per source system — depends on existing API capabilities</p>
+    </div>
+    <div style="background:var(--color-background-warning); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-warning); margin:0 0 4px;">Build vs buy</p>
+      <p style="font-size:12px; color:var(--color-text-warning); margin:0;">Evaluate observability platforms (e.g. Datadog, Grafana) vs custom pipeline build</p>
+    </div>
+    <div style="background:var(--color-background-warning); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-warning); margin:0 0 4px;">Data residency</p>
+      <p style="font-size:12px; color:var(--color-text-warning); margin:0;">Confirm cloud region constraints for payment event storage and processing</p>
+    </div>
+    <div style="background:var(--color-background-warning); border-radius:var(--border-radius-md); padding:12px 14px;">
+      <p style="font-size:12px; font-weight:500; color:var(--color-text-warning); margin:0 0 4px;">PII handling</p>
+      <p style="font-size:12px; color:var(--color-text-warning); margin:0;">Define masking / tokenisation strategy before ingestion design is finalised</p>
+    </div>
+  </div>
+
+  <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px;">
+    <i class="ti ti-calendar" style="font-size:15px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Phased delivery
+  </p>
+  <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; margin-bottom:1.5rem;">
+    <div style="display:grid; grid-template-columns:130px 1fr; border-bottom:0.5px solid var(--color-border-tertiary);">
+      <div style="padding:14px 16px; background:var(--color-background-info);">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-info); margin:0;">Phase 1 · M1–3</p>
+        <p style="font-size:11px; color:var(--color-text-info); margin:4px 0 0;">Foundation</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:12px; color:var(--color-text-primary); margin:0; line-height:1.7;">Source system integration · canonical schema · ingestion pipeline · basic ops dashboard · threshold alerting on failure rate &amp; latency</p>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:130px 1fr;">
+      <div style="padding:14px 16px; background:var(--color-background-success);">
+        <p style="font-size:12px; font-weight:500; color:var(--color-text-success); margin:0;">Phase 2 · M4–6</p>
+        <p style="font-size:11px; color:var(--color-text-success); margin:4px 0 0;">Intelligence</p>
+      </div>
+      <div style="padding:14px 16px; background:var(--color-background-primary);">
+        <p style="font-size:12px; color:var(--color-text-primary); margin:0; line-height:1.7;">Anomaly detection · cross-system correlation · investigation workspace · executive dashboard · hot/cold storage tiering · incident export</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <button onclick="sendPrompt('Draft a list of discovery questions the architect should ask source system owners before designing the integration layer')">Source system discovery questions ↗</button>
+    <button onclick="sendPrompt('Compare event-driven vs polling integration patterns for a payments observatory')">Event-driven vs polling trade-offs ↗</button>
+    <button onclick="sendPrompt('What are the key risks in building a payments observatory and how should they be mitigated?')">Identify architecture risks ↗</button>
+  </div>
+
+</div>
